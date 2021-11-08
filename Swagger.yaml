@@ -1,0 +1,258 @@
+openapi: 3.0.1
+info:
+  title: API avaliação 3
+  description: API da terceira avaliação do programa de bolsas
+  version: 0.0.1
+  termsOfService: https://mockapi.io
+  contact:
+    name: Suporte ao Dev
+    email: bruno.potrich_BOLS@compasso.com.br
+    url: https://mockapi.io
+  license:
+    name: 'Lincença: GPLv3'
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+externalDocs:
+  description: Documentação burocrática
+  url: https://mockapi.io
+servers:
+  - url: https://localhost:8082/api/states
+    description: Avaliacao
+paths:
+  /partidos:
+    get:
+      summary: Busca todos os partidos criados
+      parameters:
+        - in: header
+          name: ideologia
+          schema:
+            type: string
+          required: false
+          description: Filtra Partidos por ideologia
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partido'
+    post:
+      summary: Cria novo Partido
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partido'
+      responses:
+        '201':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partido'
+  /partidos/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true  
+        
+        
+    get:
+      summary: Busca Partido pelo Id
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partido'
+        '404':
+          description: Partido não encontrado
+          content:
+            application/json:
+              example: Not Found
+    put:
+      summary: Atualiza um Partido
+      requestBody:
+      
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partido'
+      description: Atualiza Partido Peo Id
+      operationId: id
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partido'
+        '404':
+          description: Partido não encontrado
+          content:
+            application/json:
+              example: Not Found
+          
+    delete:
+      summary: Deleta um Partido
+      description: Deleta um Partido por Id
+      operationId: string
+      responses:
+        default:
+          description: Sucesso
+  /associados:
+    get:
+      summary: Busca todos os associados criados
+      parameters:
+        - in: header
+          name: Cargo
+          schema:
+            type: string
+          required: false
+          description: Pega os associados por cargo politico
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Associado'
+    post:
+      summary: Cria novo Associado
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Associado'
+      responses:
+        '201':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Associado'
+  /associados/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+    get:
+      summary: Busca um Associado pelo ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Associado'
+        '404':
+          description: Associado não encontrada
+          content:
+            application/json:
+              example: Not Found
+    put:
+      summary: Atualiza um Associado
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Associado'
+      description: Atualiza um Associado pelo ID
+      operationId: DI
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Associado'
+        '404':
+          description: Associado não encontrado
+          content:
+            application/json:
+              example: Not Found
+          
+    delete:
+      summary: Deleta um Associado
+      description: Deleta um Associado pelo id
+      operationId: 
+      responses:
+        default:
+          description: Sucesso
+  /associados/partido:
+     parameters:
+      - name: id
+        in: query
+        schema:
+          type: integer
+        required: true
+     post:
+      summary: Vincula um associado a um Partido
+      description: Vincula um associado a partido 
+      operationId: 
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Associado'
+        '404':
+          description: Partido não encontrada
+          content:
+            application/json:
+              example: Not Found
+  
+security:
+  - auth: []
+components:
+  schemas:
+    Partido:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        sigla:
+          type: string
+        ideologia:
+          type: string
+        dataFundacao:
+          type: integer
+        associados:
+          type: string
+          
+          
+    Associado:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        cargoPolitico:
+          type: string
+        dataNascimento:
+          type: integer
+        sexo:
+          type: string
+        partido:
+          type: string
+  securitySchemes:
+    auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
